@@ -29,7 +29,7 @@
                   return;
                 } else {
                   time = Date.now();
-                  utils.trigger("dragging");
+                  utils.trigger('update:curve');
                 }
                 p = ui.position;
                 return _this.model.set({

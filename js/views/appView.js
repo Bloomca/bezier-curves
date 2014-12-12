@@ -43,7 +43,8 @@
         });
       },
       updateBezier: function() {
-        return utils.points = this.collection.toJSON();
+        utils.points = this.collection.toJSON();
+        return utils.trigger('update:curve');
       },
       createNode: function(e) {
         var offset;
