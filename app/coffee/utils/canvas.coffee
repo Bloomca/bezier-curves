@@ -1,68 +1,96 @@
-define([], ->
+define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
   colors = {
-    8: '#324F69'
-    7: '#E3B58D'
-    6: '#C3E04C'
-    5: '#A584AD'
-    4: '#ccc'
-    3: '#3BCC99'
+    0: '#ccc'
+    1: '#3BCC99'
     2: '#7744AA'
-    1: '#AAAA3E'
-    0: '#D12454'
+    3: '#AAAA3E'
+    4: '#D12454'
+    5: '#A584AD'
+    6: '#C3E04C'
+    7: '#E3B58D'
+    8: '#324F69'
   }
 
   utils = {
 
-    drawBezierCurve: (ctx, points) ->
-      if (this.timer) then clearInterval(this.timer)
+    max: 40
+    len: 0
+
+    init: ->
+      this.getBezierCurve()
+      this.drawBezierCurve()
+      this.on('drag:start', =>
+#        this.curve = []
+#        this.getBezierCurve()
+        this.static = true
+      )
+
+      this.on('drag:stop', =>
+        this.static = false
+        this.curve = []
+        this.getBezierCurve()
+      )
+
+      this.on('dragging', =>
+        this.curve = []
+        this.getBezierCurve()
+      )
+
+    points: []
+    curve: []
+
+    drawBezierCurve: () ->
       ctr = 0
-      curve = []
       this.timer = setInterval( =>
+        return unless (this.points.length || this.ctx || this.curve.length)
+        this.len = this.points.length
+        ctx = this.ctx
         ctx.clearRect(0, 0, 800, 800)
 
-        p = this.drawBezierPoint ctx, points, (ctr % 100) / 100
+        circle = this.drawBezierPoint ctx, this.points, (ctr % 100) / 100, { static: this.static }
 
         # draw stable curve
         ctx.beginPath()
         ctx.lineWidth = 5
         ctx.strokeStyle = '#111'
-        for p in curve
+        for p in this.curve
           ctx.lineTo(p.x, p.y)
 
         ctx.stroke()
         ctx.closePath()
 
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, 5, 0, 2 * Math.PI)
-        ctx.fillStyle = '#D12454'
-        ctx.fill()
-        ctx.closePath()
+        if (circle)
+          ctx.beginPath()
+          ctx.arc(circle.x, circle.y, 5, 0, 2 * Math.PI)
+          ctx.fillStyle = '#D12454'
+          ctx.fill()
+          ctx.closePath()
 
         if (ctr++ > 100) then ctr = 0
 
       , 40)
 
-      for i in [0..100]
-        curve.push this.drawBezierPoint(ctx, points, i/100, true)
+    getBezierCurve: ->
+      for i in [0..this.max]
+        this.curve.push this.drawBezierPoint this.ctx, this.points, i/this.max, { silent: true }
 
-
-    drawBezierPoint: (ctx, points, l, silent) ->
+    drawBezierPoint: (ctx, points, l, options = {} ) ->
       if (points.length == 2)
-        this.drawLine(ctx, points[0], points[1], 2) unless silent
+        this.drawLine(ctx, points[0], points[1], 2) unless options.silent
         return this.getX(points[0], points[1], l)
 
       arr = []
       for num in [0..points.length-2]
-        this.drawLine(ctx, points[num], points[num+1], points.length) unless silent
+        this.drawLine(ctx, points[num], points[num+1], this.len - points.length) unless options.silent
         p = this.getX(points[num], points[num+1], l)
         arr.push p
-      return this.drawBezierPoint(ctx, arr, l)
+      return this.drawBezierPoint(ctx, arr, l) unless options.static
 
 
     drawLine: (ctx, p1, p2, number) ->
       ctx.beginPath()
       ctx.lineWidth = 3
-      if (number)
+      if (number?)
         ctx.strokeStyle = colors[number]
         ctx.fillStyle = colors[number]
       ctx.arc(p1.x, p1.y, 5, 0, 2 * Math.PI)
@@ -96,6 +124,8 @@ define([], ->
       return p
 
   }
+
+  _.extend(utils, Backbone.Events)
 
   return utils
 )

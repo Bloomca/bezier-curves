@@ -11,14 +11,15 @@
         this.render();
         this.collection.on('change remove add', (function(_this) {
           return function() {
-            return _this.drawBezier();
+            return _this.updateBezier();
           };
         })(this));
-        return this.collection.on('add', (function(_this) {
+        this.collection.on('add', (function(_this) {
           return function(point) {
             return _this.$el.append(_this.addPoint(point).$el);
           };
         })(this));
+        return utils.ctx = this.canvasCtx;
       },
       render: function() {
         var len;
@@ -31,34 +32,29 @@
         len = this.collection.length;
         this.collection.each((function(_this) {
           return function(point, i) {
-            if (!(i === len - 1)) {
-              utils.drawLine(_this.canvasCtx, point.toJSON(), _this.collection.at(i + 1).toJSON());
-            }
             return _this.$el.append(_this.addPoint(point).$el);
           };
         })(this));
-        return this.drawBezier();
+        return this.updateBezier();
       },
       addPoint: function(point) {
         return new PointView({
           model: point
         });
       },
-      drawBezier: function() {
-        return utils.drawBezierCurve(this.canvasCtx, this.collection.toJSON());
+      updateBezier: function() {
+        return utils.points = this.collection.toJSON();
       },
       createNode: function(e) {
         var offset;
         if (e.target && e.target.classList.contains('bezierPoint')) {
 
         } else {
-          if (1 || confirm("Create node?")) {
-            offset = this.$el.offset();
-            return this.collection.add({
-              x: e.clientX - offset.left,
-              y: e.clientY - offset.top
-            });
-          }
+          offset = this.$el.offset();
+          return this.collection.add({
+            x: e.clientX - offset.left,
+            y: e.clientY - offset.top
+          });
         }
       }
     });

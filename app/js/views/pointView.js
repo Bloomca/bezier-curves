@@ -1,5 +1,5 @@
 (function() {
-  define(['jquery', 'underscore', 'backbone', 'jqueryui'], function($, _, Backbone) {
+  define(['jquery', 'underscore', 'backbone', 'utils/canvas', 'jqueryui'], function($, _, Backbone, utils) {
     var PointView;
     return PointView = Backbone.View.extend({
       className: "bezierPoint",
@@ -9,16 +9,27 @@
       initialize: function() {
         this.$el.draggable({
           containment: "parent",
+          start: (function(_this) {
+            return function() {
+              return utils.trigger("drag:start");
+            };
+          })(this),
+          stop: (function(_this) {
+            return function() {
+              return utils.trigger("drag:stop");
+            };
+          })(this),
           drag: ((function(_this) {
             return function() {
               var time;
               time = Date.now();
               return function(evt, ui) {
                 var p;
-                if (Date.now() - time < 100) {
+                if (Date.now() - time < 20) {
                   return;
                 } else {
                   time = Date.now();
+                  utils.trigger("dragging");
                 }
                 p = ui.position;
                 return _this.model.set({
@@ -38,10 +49,8 @@
         });
       },
       removePoint: function() {
-        if (confirm("Delete node?")) {
-          this.model.destroy();
-          return this.remove();
-        }
+        this.model.destroy();
+        return this.remove();
       }
     });
   });

@@ -1,5 +1,5 @@
 (function() {
-  define(['views/appView', 'collections/points'], function(AppView, Points) {
+  define(['views/appView', 'collections/points', 'utils/canvas'], function(AppView, Points, utils) {
     var appView, points;
     points = new Points([
       {
@@ -16,9 +16,10 @@
         y: 500
       }
     ]);
-    return appView = new AppView({
+    appView = new AppView({
       collection: points
     });
+    return utils.init();
   });
 
 }).call(this);

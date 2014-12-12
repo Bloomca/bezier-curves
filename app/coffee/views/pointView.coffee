@@ -1,6 +1,6 @@
 define([
-  'jquery', 'underscore', 'backbone', 'jqueryui'
-], ($, _, Backbone) ->
+  'jquery', 'underscore', 'backbone', 'utils/canvas', 'jqueryui'
+], ($, _, Backbone, utils) ->
 
   PointView = Backbone.View.extend({
 
@@ -14,13 +14,18 @@ define([
 
       this.$el.draggable({
         containment: "parent"
+        start: =>
+          utils.trigger "drag:start"
+        stop: =>
+          utils.trigger "drag:stop"
         drag: ( =>
           time = Date.now()
           (evt, ui) =>
-            if (Date.now() - time < 100)
+            if (Date.now() - time < 20)
               return
             else
               time = Date.now()
+              utils.trigger "dragging"
             p = ui.position
             this.model.set({
               x: p.left + 10
@@ -43,9 +48,8 @@ define([
       }
 
     removePoint: ->
-      if (confirm("Delete node?"))
-        this.model.destroy()
-        this.remove()
+      this.model.destroy()
+      this.remove()
 
   })
 

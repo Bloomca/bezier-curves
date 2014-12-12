@@ -15,12 +15,15 @@ define([
       this.render()
 
       this.collection.on('change remove add', =>
-        this.drawBezier()
+        this.updateBezier()
       )
 
       this.collection.on('add', (point) =>
         this.$el.append this.addPoint(point).$el
       )
+
+      utils.ctx = this.canvasCtx
+
 
     render: ->
       this.$el.html( this.template() )
@@ -34,29 +37,26 @@ define([
 
       len = this.collection.length
       this.collection.each( (point, i) =>
-        unless (i == len-1)
-          utils.drawLine(this.canvasCtx, point.toJSON(), this.collection.at(i+1).toJSON())
         this.$el.append this.addPoint(point).$el
       )
-      this.drawBezier()
+      this.updateBezier()
 
 
     addPoint: (point) ->
       new PointView { model: point }
 
-    drawBezier: ->
-      utils.drawBezierCurve(this.canvasCtx, this.collection.toJSON())
+    updateBezier: ->
+      utils.points = this.collection.toJSON()
 
     createNode: (e) ->
       if (e.target && e.target.classList.contains('bezierPoint') )
         return
       else
-        if (1 || confirm("Create node?"))
-          offset = this.$el.offset()
-          this.collection.add({
-            x: e.clientX - offset.left
-            y: e.clientY - offset.top
-          })
+        offset = this.$el.offset()
+        this.collection.add({
+          x: e.clientX - offset.left
+          y: e.clientY - offset.top
+        })
 
   })
 

@@ -6,6 +6,11 @@ $points-border: #000
   margin: 0 auto
   text-align: center
 
+=leftCorner
+  position: absolute
+  top: 0
+  left: 0
+
 .disclaimer
   +container()
   p
@@ -17,9 +22,10 @@ $points-border: #000
   height: 800px
 
 #grid
-  position: absolute
-  top: 0
-  left: 0
+  +leftCorner()
+
+#bezier
+  +leftCorner()
 
 .bezierPoint
   cursor: pointer
