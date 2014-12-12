@@ -1,0 +1,31 @@
+$points-color: #4d66aa
+$points-border: #000
+
+=container
+  width: 800px
+  margin: 0 auto
+  text-align: center
+
+.disclaimer
+  +container()
+  p
+    padding: 10px 30px
+
+#app-container
+  +container()
+  position: relative
+  height: 800px
+
+#grid
+  position: absolute
+  top: 0
+  left: 0
+
+.bezierPoint
+  cursor: pointer
+  position: absolute!important
+  width: 20px
+  height: 20px
+  background: $points-color
+  border-radius: 20px
+  border: 4px solid $points-border

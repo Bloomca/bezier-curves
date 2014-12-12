@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Bezier curves animation</title>
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="css/jquery-ui.structure.min.css" />
+    <link rel="stylesheet" href="css/jquery-ui.theme.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="vendor/require.js" data-main="js/main.js"></script>
+</head>
+<body>
+
+    <div class="disclaimer">
+        <h1>Bezier curve</h1>
+        <p>This is simple bezier curve animation. You could add a nodes (just double click at empty space in grid)
+        and delete them (again, double click at node). Animation now is quite slow (especially while dragging –
+            I'm working on it:) )</p>
+    </div>
+
+    <div id="app-container"></div>
+
+    <script id="app-main-tmpl" type="text/template">
+        <canvas width="800" height="800" id="grid"></canvas>
+        <canvas width="800" height="800" id="bezier">
+            Sorry, your browser doesn't support canvas element :(
+        </canvas>
+    </script>
+</body>
+</html>
