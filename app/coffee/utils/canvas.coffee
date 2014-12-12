@@ -41,7 +41,9 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
 
     drawBezierCurve: () ->
       ctr = 0
-      this.timer = setInterval( =>
+
+      animate = () =>
+        requestAnimationFrame(animate)
         return unless (this.points.length || this.ctx || this.curve.length)
         this.len = this.points.length
         ctx = this.ctx
@@ -68,11 +70,63 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
 
         if (ctr++ > 100) then ctr = 0
 
-      , 40)
+      requestAnimationFrame(animate)
+
+#      this.timer = setInterval( =>
+#        return unless (this.points.length || this.ctx || this.curve.length)
+#        this.len = this.points.length
+#        ctx = this.ctx
+#        ctx.clearRect(0, 0, 800, 800)
+#
+#        circle = this.drawBezierPoint ctx, this.points, (ctr % 100) / 100, { static: this.static }
+#
+#        # draw stable curve
+#        ctx.beginPath()
+#        ctx.lineWidth = 5
+#        ctx.strokeStyle = '#111'
+#        for p in this.curve
+#          ctx.lineTo(p.x, p.y)
+#
+#        ctx.stroke()
+#        ctx.closePath()
+#
+#        if (circle)
+#          ctx.beginPath()
+#          ctx.arc(circle.x, circle.y, 5, 0, 2 * Math.PI)
+#          ctx.fillStyle = '#D12454'
+#          ctx.fill()
+#          ctx.closePath()
+#
+#        if (ctr++ > 100) then ctr = 0
+#
+#      , 40)
+
+#    getBezierCurve: ->
+#      for i in [0..this.max]
+#        this.curve.push this.drawBezierPoint this.ctx, this.points, i/this.max, { silent: true }
 
     getBezierCurve: ->
       for i in [0..this.max]
-        this.curve.push this.drawBezierPoint this.ctx, this.points, i/this.max, { silent: true }
+        this.curve.push {
+          x: this.getBezierFormula(this.max, i, i/this.max, 'x')
+          y: this.getBezierFormula(this.max, i, i/this.max, 'y')
+        }
+
+    getBezierFormula: (n, i, t, v) ->
+      total = 0
+      for num in [0...this.points.length]
+        total += this.getBezierCoeff(this.points.length-1, num, t, this.points[num][v])
+      return total
+
+    getBezierCoeff: (n, i, t, v) ->
+      this.getBinom(n, i) * Math.pow((1-t), n-i) * Math.pow(t, i) * v;
+
+    getBinom: (n, i) ->
+      this.fact(n) / ( this.fact(i) * this.fact(n-i) )
+
+    fact: (n) ->
+      return 1 if (n == 1 || n == 0)
+      n * this.fact (n - 1)
 
     drawBezierPoint: (ctx, points, l, options = {} ) ->
       if (points.length == 2)

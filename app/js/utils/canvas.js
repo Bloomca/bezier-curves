@@ -40,11 +40,12 @@
       points: [],
       curve: [],
       drawBezierCurve: function() {
-        var ctr;
+        var animate, ctr;
         ctr = 0;
-        return this.timer = setInterval((function(_this) {
+        animate = (function(_this) {
           return function() {
             var circle, ctx, p, _i, _len, _ref;
+            requestAnimationFrame(animate);
             if (!(_this.points.length || _this.ctx || _this.curve.length)) {
               return;
             }
@@ -75,17 +76,39 @@
               return ctr = 0;
             }
           };
-        })(this), 40);
+        })(this);
+        return requestAnimationFrame(animate);
       },
       getBezierCurve: function() {
         var i, _i, _ref, _results;
         _results = [];
         for (i = _i = 0, _ref = this.max; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-          _results.push(this.curve.push(this.drawBezierPoint(this.ctx, this.points, i / this.max, {
-            silent: true
-          })));
+          _results.push(this.curve.push({
+            x: this.getBezierFormula(this.max, i, i / this.max, 'x'),
+            y: this.getBezierFormula(this.max, i, i / this.max, 'y')
+          }));
         }
         return _results;
+      },
+      getBezierFormula: function(n, i, t, v) {
+        var num, total, _i, _ref;
+        total = 0;
+        for (num = _i = 0, _ref = this.points.length; 0 <= _ref ? _i < _ref : _i > _ref; num = 0 <= _ref ? ++_i : --_i) {
+          total += this.getBezierCoeff(this.points.length - 1, num, t, this.points[num][v]);
+        }
+        return total;
+      },
+      getBezierCoeff: function(n, i, t, v) {
+        return this.getBinom(n, i) * Math.pow(1 - t, n - i) * Math.pow(t, i) * v;
+      },
+      getBinom: function(n, i) {
+        return this.fact(n) / (this.fact(i) * this.fact(n - i));
+      },
+      fact: function(n) {
+        if (n === 1 || n === 0) {
+          return 1;
+        }
+        return n * this.fact(n - 1);
       },
       drawBezierPoint: function(ctx, points, l, options) {
         var arr, num, p, _i, _ref;
