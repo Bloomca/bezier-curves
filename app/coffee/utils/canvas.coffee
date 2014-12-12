@@ -31,7 +31,7 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
         this.getBezierCurve()
       )
 
-      this.on('dragging', =>
+      this.on('update:curve', =>
         this.curve = []
         this.getBezierCurve()
       )

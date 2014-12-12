@@ -47,6 +47,7 @@ define([
 
     updateBezier: ->
       utils.points = this.collection.toJSON()
+      utils.trigger 'update:curve'
 
     createNode: (e) ->
       if (e.target && e.target.classList.contains('bezierPoint') )

@@ -25,7 +25,7 @@ define([
               return
             else
               time = Date.now()
-              utils.trigger "dragging"
+              utils.trigger 'update:curve'
             p = ui.position
             this.model.set({
               x: p.left + 10

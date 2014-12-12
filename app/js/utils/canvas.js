@@ -30,7 +30,7 @@
             return _this.getBezierCurve();
           };
         })(this));
-        return this.on('dragging', (function(_this) {
+        return this.on('update:curve', (function(_this) {
           return function() {
             _this.curve = [];
             return _this.getBezierCurve();
