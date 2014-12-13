@@ -2,15 +2,15 @@
   define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
     var colors, utils;
     colors = {
-      0: '#ccc',
-      1: '#3BCC99',
-      2: '#7744AA',
-      3: '#AAAA3E',
-      4: '#D12454',
-      5: '#A584AD',
-      6: '#C3E04C',
-      7: '#E3B58D',
-      8: '#324F69'
+      0: '#c1cdcd',
+      1: '#7fffd4',
+      2: '#8b7d6b',
+      3: '#8b2323',
+      4: '#7fff00',
+      5: '#ff7256',
+      6: '#00cdcd',
+      7: '#ffb90f',
+      8: '#9a32cd'
     };
     utils = {
       max: 40,
