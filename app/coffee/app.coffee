@@ -1,8 +1,9 @@
 define([
   'views/appView',
+  'views/controlsView',
   'collections/points',
   'utils/canvas'
-], (AppView, Points, utils) ->
+], (AppView, ControlsView, Points, utils) ->
 
   points = new Points([{
     x: 100
@@ -19,6 +20,8 @@ define([
   }])
 
   appView = new AppView { collection: points }
+
+  #controlsView = new ControlsView()
 
   utils.init()
 

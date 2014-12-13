@@ -20,7 +20,18 @@
         best algorithm ever ;) Though it's very intuitive understandable.</p>
     </div>
 
+    <div id="app-controls"></div>
     <div id="app-container"></div>
+
+    <script id="app-controls-tmpl" type="text/template">
+        <div>
+            <button class="toggle-static">
+                Enable
+            </button>
+            <span>Now animation on the fly disabled</span>
+        </div>
+        <div id="quantity">Quantity of points in Bezier curve</div>
+    </script>
 
     <script id="app-main-tmpl" type="text/template">
         <canvas width="800" height="800" id="grid"></canvas>

@@ -15,12 +15,15 @@
     utils = {
       max: 40,
       len: 0,
+      active: true,
       init: function() {
         this.getBezierCurve();
         this.drawBezierCurve();
         this.on('drag:start', (function(_this) {
           return function() {
-            return _this["static"] = true;
+            if (!_this.active) {
+              return _this["static"] = true;
+            }
           };
         })(this));
         this.on('drag:stop', (function(_this) {
@@ -151,7 +154,7 @@
       drawGrid: function(ctx) {
         var num, _i;
         ctx.beginPath();
-        for (num = _i = 0.5; _i <= 800; num = _i += 20) {
+        for (num = _i = 0.5; _i < 800; num = _i += 20) {
           ctx.moveTo(num, 0);
           ctx.lineTo(num, 800);
           ctx.moveTo(0, num);

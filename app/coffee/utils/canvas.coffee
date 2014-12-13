@@ -15,6 +15,7 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
 
     max: 40
     len: 0
+    active: true
 
     init: ->
       this.getBezierCurve()
@@ -22,7 +23,7 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
       this.on('drag:start', =>
 #        this.curve = []
 #        this.getBezierCurve()
-        this.static = true
+        this.static = true unless this.active
       )
 
       this.on('drag:stop', =>
@@ -72,38 +73,6 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
 
       requestAnimationFrame(animate)
 
-#      this.timer = setInterval( =>
-#        return unless (this.points.length || this.ctx || this.curve.length)
-#        this.len = this.points.length
-#        ctx = this.ctx
-#        ctx.clearRect(0, 0, 800, 800)
-#
-#        circle = this.drawBezierPoint ctx, this.points, (ctr % 100) / 100, { static: this.static }
-#
-#        # draw stable curve
-#        ctx.beginPath()
-#        ctx.lineWidth = 5
-#        ctx.strokeStyle = '#111'
-#        for p in this.curve
-#          ctx.lineTo(p.x, p.y)
-#
-#        ctx.stroke()
-#        ctx.closePath()
-#
-#        if (circle)
-#          ctx.beginPath()
-#          ctx.arc(circle.x, circle.y, 5, 0, 2 * Math.PI)
-#          ctx.fillStyle = '#D12454'
-#          ctx.fill()
-#          ctx.closePath()
-#
-#        if (ctr++ > 100) then ctr = 0
-#
-#      , 40)
-
-#    getBezierCurve: ->
-#      for i in [0..this.max]
-#        this.curve.push this.drawBezierPoint this.ctx, this.points, i/this.max, { silent: true }
 
     getBezierCurve: ->
       for i in [0..this.max]
@@ -158,7 +127,7 @@ define(['jquery', 'underscore', 'backbone'], ($, _, Backbone) ->
     drawGrid: (ctx) ->
       ctx.beginPath()
 
-      for num in [0.5..800] by 20
+      for num in [0.5...800] by 20
         ctx.moveTo(num, 0)
         ctx.lineTo(num, 800)
         ctx.moveTo(0, num)

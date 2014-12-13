@@ -3,7 +3,8 @@
   margin: 0 auto;
   text-align: center; }
   .disclaimer p {
-    padding: 10px 30px; }
+    padding: 0 30px 15px 30px;
+    line-height: 1.4em; }
 
 #app-container {
   width: 800px;
