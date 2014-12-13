@@ -1,5 +1,5 @@
 (function() {
-  define(['views/appView', 'collections/points', 'utils/canvas'], function(AppView, Points, utils) {
+  define(['views/appView', 'views/controlsView', 'collections/points', 'utils/canvas'], function(AppView, ControlsView, Points, utils) {
     var appView, points;
     points = new Points([
       {

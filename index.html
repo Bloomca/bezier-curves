@@ -16,11 +16,22 @@
     <div class="disclaimer">
         <h1>Bezier curve</h1>
         <p>This is simple bezier curve animation. You could add a nodes (just double click at empty space in grid)
-        and delete them (again, double click at node). Animation now is quite slow (especially while dragging –
-            I'm working on it:) )</p>
+        and delete them (again, double click at node). Animation is quite slow, because computation of all lines isn't the
+        best algorithm ever ;) Though it's very intuitive understandable.</p>
     </div>
 
+    <div id="app-controls"></div>
     <div id="app-container"></div>
+
+    <script id="app-controls-tmpl" type="text/template">
+        <div>
+            <button class="toggle-static">
+                Enable
+            </button>
+            <span>Now animation on the fly disabled</span>
+        </div>
+        <div id="quantity">Quantity of points in Bezier curve</div>
+    </script>
 
     <script id="app-main-tmpl" type="text/template">
         <canvas width="800" height="800" id="grid"></canvas>
